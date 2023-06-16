@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.lubowiecki.firststepsjfx.MainController">
+   <children>
+      <Button layoutX="278.0" layoutY="188.0" mnemonicParsing="false" onAction="#showGreeting" text="Start" />
+      <Label fx:id="title" alignment="CENTER" layoutX="148.0" layoutY="134.0" prefHeight="17.0" prefWidth="301.0" text="Das ist Text" textAlignment="CENTER" />
+      <TextField fx:id="name" layoutX="220.0" layoutY="291.0" />
+      <Label layoutX="220.0" layoutY="267.0" text="Name:" />
+      <Label fx:id="namenListe" layoutX="14.0" layoutY="14.0" prefHeight="376.0" prefWidth="129.0" />
+   </children>
+</AnchorPane>
