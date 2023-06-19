@@ -10,6 +10,10 @@ public class BookRepository {
 
     private static final String TABLE = "books";
 
+    public BookRepository() throws SQLException {
+        createTable();
+    }
+
     public List<Book> find() throws SQLException {
 
         final String sql = "SELECT * FROM " + TABLE;
@@ -34,7 +38,7 @@ public class BookRepository {
         throw new UnsupportedOperationException("Noch nicht implementiert!");
     }
 
-    public boolean save(Book book) {
+    public boolean save(Book book) throws SQLException {
         if(book.getId() > 0) {
             return update(book);
         }
@@ -43,9 +47,19 @@ public class BookRepository {
         }
     }
 
-    private boolean insert(Book book) {
-        // TODO: implementieren
-        throw new UnsupportedOperationException("Noch nicht implementiert!");
+    private boolean insert(Book book) throws SQLException {
+
+        final String sql = "INSERT INTO " + TABLE + " (id, title, description, isbn, publisher, author) " +
+                            "VALUES(NULL, ?, ?, ?, ?, ?)";
+
+        try(Connection con = DBUtils.getConnection(); PreparedStatement stmt = con.prepareStatement(sql)) {
+            stmt.setString(1, book.getTitle());
+            stmt.setString(2, book.getDescription());
+            stmt.setString(3, book.getIsbn());
+            stmt.setString(4, book.getPublisher());
+            stmt.setString(5, book.getAuthor());
+            return stmt.executeUpdate() > 0; // Führt das vorbereitete Statement aus
+        }
     }
 
     private boolean update(Book book) {
