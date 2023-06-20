@@ -67,13 +67,14 @@ public class BookRepository {
         throw new UnsupportedOperationException("Noch nicht implementiert!");
     }
 
-    public boolean delete(Book book) {
+    public boolean delete(Book book) throws SQLException {
         return delete(book.getId());
     }
 
-    public boolean delete(int id) {
-        // TODO: implementieren
-        throw new UnsupportedOperationException("Noch nicht implementiert!");
+    public boolean delete(int id) throws SQLException {
+        try(Connection con = DBUtils.getConnection(); Statement stmt = con.createStatement()) {
+            return stmt.executeUpdate("DELETE FROM " + TABLE + " WHERE id = " + id) > 0;
+        }
     }
 
     private Book populate(ResultSet rs) throws SQLException {

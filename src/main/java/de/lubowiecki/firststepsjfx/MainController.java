@@ -1,8 +1,10 @@
 package de.lubowiecki.firststepsjfx;
 
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
@@ -31,7 +33,7 @@ public class MainController implements Initializable {
     private TextField publisher;
 
     @FXML
-    private TextArea output;
+    private TableView<Book> books;
 
     private BookRepository bookRepository;
 
@@ -62,6 +64,20 @@ public class MainController implements Initializable {
         }
     }
 
+    @FXML
+    protected void delete() {
+        Book book = books.getSelectionModel().getSelectedItem();
+
+        try {
+            bookRepository.delete(book);
+            show();
+        }
+        catch (SQLException e) {
+            // TODO: Fehler in der GUI ausgeben
+            e.printStackTrace();
+        }
+    }
+
     // TODO: Bearbeiten von Altdaten
     // TODO: Löschen von Altdaten
     // TODO: Konfigbereich
@@ -69,12 +85,14 @@ public class MainController implements Initializable {
 
     private void show() {
         try {
-            // TODO: AUsgabe in eine TableView
+            // TODO: Ausgabe in eine TableView
 
-            String str = bookRepository.find().stream().map(b -> b.toString())
-                    .collect(Collectors.joining("\n"));
+            // Alle Bücher in einen String umwandeln
+            /* String str = bookRepository.find().stream().map(b -> b.toString())
+                    .collect(Collectors.joining("\n")); */
 
-            output.setText(str); // Ausgabe in das TextArea
+            List<Book> list = bookRepository.find();
+            books.setItems(FXCollections.observableList(list));
         }
         catch (SQLException e) {
             // TODO: Fehler in der GUI ausgeben
