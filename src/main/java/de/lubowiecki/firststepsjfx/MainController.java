@@ -37,11 +37,13 @@ public class MainController implements Initializable {
 
     private BookRepository bookRepository;
 
+    private Book current = new Book();
+
     @FXML
     protected void save() {
 
         // Neues Buch mit Daten füllen
-        Book book = new Book();
+        Book book = current;
         book.setTitle((title.getText().length() > 0) ? title.getText() : null);
         book.setDescription((description.getText().length() > 0) ? description.getText() : null);
         book.setIsbn(isbn.getText());
@@ -49,11 +51,10 @@ public class MainController implements Initializable {
         book.setPublisher(publisher.getText());
 
         try {
+            // TODO: Validierung
             // Buch speichern
             bookRepository.save(book);
             clear();
-
-            // TODO: Validierung
 
             // Ausgabe aktuallisieren
             show();
@@ -65,10 +66,22 @@ public class MainController implements Initializable {
     }
 
     @FXML
+    protected void edit() {
+        current = books.getSelectionModel().getSelectedItem();
+        // Formular wird belegt
+        title.setText(current.getTitle());
+        description.setText(current.getDescription());
+        isbn.setText(current.getIsbn());
+        author.setText(current.getAuthor());
+        publisher.setText(current.getPublisher());
+    }
+
+    @FXML
     protected void delete() {
         Book book = books.getSelectionModel().getSelectedItem();
 
         try {
+            // TODO: Vor dem Löschen nachfragen
             bookRepository.delete(book);
             show();
         }
@@ -79,9 +92,7 @@ public class MainController implements Initializable {
     }
 
     // TODO: Bearbeiten von Altdaten
-    // TODO: Löschen von Altdaten
     // TODO: Konfigbereich
-    // TODO: Mehrsprachigkeit
 
     private void show() {
         try {
@@ -100,12 +111,14 @@ public class MainController implements Initializable {
         }
     }
 
+    @FXML
     private void clear() {
         title.clear();
         description.clear();
         isbn.clear();
         author.clear();
         publisher.clear();
+        current = new Book();
     }
 
     @Override

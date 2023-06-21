@@ -62,9 +62,19 @@ public class BookRepository {
         }
     }
 
-    private boolean update(Book book) {
-        // TODO: implementieren
-        throw new UnsupportedOperationException("Noch nicht implementiert!");
+    private boolean update(Book book) throws SQLException {
+
+        final String sql = "UPDATE " + TABLE + " SET title = ?, description = ?, isbn = ?, publisher = ?, author = ? WHERE id = ?";
+
+        try(Connection con = DBUtils.getConnection(); PreparedStatement stmt = con.prepareStatement(sql)) {
+            stmt.setString(1, book.getTitle());
+            stmt.setString(2, book.getDescription());
+            stmt.setString(3, book.getIsbn());
+            stmt.setString(4, book.getPublisher());
+            stmt.setString(5, book.getAuthor());
+            stmt.setInt(6, book.getId());
+            return stmt.executeUpdate() > 0;
+        }
     }
 
     public boolean delete(Book book) throws SQLException {
